@@ -48,21 +48,21 @@ def sign_up():
     agent = Agent.create(email=data.get('email'), password=data.get('password'), name=data.get('name'), last_name=data.get('last_name'), phone=data.get('phone'))
     if not isinstance(agent, Agent):
         return jsonify({"msg": "tuve problemas, lo siento"}), 500
-    return jsonify(user.serialize()), 201
+    return jsonify(agent.serialize()), 201
 
 @app.route("/log-in", methods=["POST"])
 def log_in():
     print(request.data)
     print(request.json)
     data = request.json
-    user = User.query.filter_by(email=data['email']).one_or_none()
-    if user is None: 
+    agent = Agent.query.filter_by(email=data['email']).one_or_none()
+    if agent is None: 
         return jsonify({"msg": "no existe el usuario"}), 404
-    if not user.check_password(data.get('password')):
+    if not agent.check_password(data.get('password')):
         return jsonify({"msg": "bad credentials"}), 400
-    token = create_access_token(identity=user.id)
+    token = create_access_token(identity=agent.id)
     return jsonify({
-        "user": user.serialize(),
+        "agent": agent.serialize(),
         "token": token
     }), 200
 

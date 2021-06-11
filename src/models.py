@@ -21,7 +21,7 @@ class Agent(db.Model):
         self.last_name = kwargs.get('last_name')
         self.phone = kwargs.get('phone')
         self.salt = os.urandom(16).hex()
-        self.set_password(kwargs.get('password')
+        self.set_password(kwargs.get('password'))
 
     @classmethod
     def create(cls, **kwargs):
